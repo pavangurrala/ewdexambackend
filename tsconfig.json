@@ -24,11 +24,6 @@
       "./node_modules/@types"
     ]
   },
-  "exclude": [
-    "node_modules",
-    "cdk.out"
-  ],
-  "include": [
-    "shared/*.json"
-  ],
+  "exclude": ["node_modules", "cdk.out"],
+  "include": ["lib/**/*.ts", "lambdas/**/*.ts", "shared/**/*"]
 }
