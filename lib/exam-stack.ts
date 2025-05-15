@@ -28,7 +28,7 @@ export class ExamStack extends cdk.Stack {
     });
 
    
-    const getCinemaMoviesFn = new lambdanode.NodejsFunction(this, "GetCinemaMoviesFn", {
+    const getCinemaByMoviesFn = new lambdanode.NodejsFunction(this, "GetCinemaMoviesFn", {
       runtime: lambda.Runtime.NODEJS_18_X,
       entry: path.join(__dirname, "../lambdas/getmoviesbycinema.ts"),
       handler: "handler",
@@ -41,7 +41,7 @@ export class ExamStack extends cdk.Stack {
     });
 
   
-    table.grantReadData(getCinemaMoviesFn);
+    table.grantReadData(getCinemaByMoviesFn);
 
     new custom.AwsCustomResource(this, "moviesddbInitData", {
       onCreate: {
@@ -72,11 +72,11 @@ export class ExamStack extends cdk.Stack {
     });
 
 
-    const cinemasResource = api.root.addResource("cinemas");
-    const cinemaIdResource = cinemasResource.addResource("{cinemaId}");
-    const moviesResource = cinemaIdResource.addResource("movies");
+    const cinemas = api.root.addResource("cinemas");
+    const cinemaId = cinemas.addResource("{cinemaId}");
+    const movies = cinemaId.addResource("movies");
 
     
-    moviesResource.addMethod("GET", new apig.LambdaIntegration(getCinemaMoviesFn));
+    movies.addMethod("GET", new apig.LambdaIntegration(getCinemaByMoviesFn));
   }
 }
